@@ -1,8 +1,8 @@
 site_name: {{ cookiecutter.__repo_name.replace("-", " ").title() }}
 site_description: |
   {{ cookiecutter.__package_emoji }}{{ cookiecutter.__package_description }}
-repo_url: https://github.com/{{ cookiecutter.__author_github_handle }}/{{ cookiecutter.__repo_name }}
-repo_name: {{ cookiecutter.__author_github_handle }}/{{ cookiecutter.repo_name }}
+repo_url: https://github.com/{{ cookiecutter.author_github_handle }}/{{ cookiecutter.__repo_name }}
+repo_name: {{ cookiecutter.author_github_handle }}/{{ cookiecutter.repo_name }}
 extra_css:
   - stylesheets/extra.css
 plugins:
