@@ -1,0 +1,54 @@
+{% raw %}
+name: Release New Docs
+on:
+  workflow_dispatch:
+  release:
+    types: [published]
+jobs:
+  release-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          token: "${{ secrets.PERSONAL_ACCESS_TOKEN }}" # access a private repo
+      - name: Setup PDM
+        uses: pdm-project/setup-pdm@v3
+        with:
+          python-version: 3.9
+          architecture: "x64"
+      - name: Install Dependencies
+        run: pdm install -G docs
+      - name: Fetch `gh-pages` branch
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+          if ! git ls-remote --heads origin gh-pages \
+            | grep -q 'refs/heads/gh-pages'; then
+            git checkout -b gh-pages
+            git push -u origin gh-pages
+          else
+            git fetch origin gh-pages --depth=1
+          fi
+          git fetch --tags --force
+      - name: Deploy New Docs Version
+        run: |
+          ref="${{ github.ref_name }}"
+
+          if [ "$ref" = "main" ]; then
+            tag="$(git tag -l | tail -1 )"
+            DOC_VERSION=${tag%.*}
+          else
+            DOC_VERSION=${ref%.*}
+          fi
+
+          pdm run mike deploy \
+            --config-file=docs/mkdocs.yml \
+            --no-redirect \
+            --update-aliases "$DOC_VERSION" latest
+          pdm run mike \
+            set-default latest \
+            --config-file=docs/mkdocs.yml
+          git push origin gh-pages
+{% endraw %}

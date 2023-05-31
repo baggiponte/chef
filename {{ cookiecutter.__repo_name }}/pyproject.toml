@@ -1,0 +1,142 @@
+[project]
+name = "{{ cookiecutter.__repo_name }}"
+description = "{{ cookiecutter.__package_emoji }}{{ cookiecutter.__package_description }}"
+authors = [
+    {name = "{{ cookiecutter.__author_name }}", email = "<{{ cookiecutter.author_email }}>"},
+]
+dynamic = ["version"]
+readme = "README.md"
+requires-python = ">={{ cookiecutter.requires_python }}"
+
+[tool.pdm.dev-dependencies]
+test = [
+    "pytest>=7.2.0",
+    "pytest-cov>=4.0.0",
+]
+lint = [
+    "pre-commit>=2.20.0",
+    "black>=23.1.0",
+    "ruff>=0.0.247",
+    "mypy>=1.0.1",
+]
+release = [
+    "commitizen>=2.42.0",
+]
+docs = [
+    "mkdocs>=1.4.2",
+    "mkdocs-material>=9.0.2",
+    "mkdocstrings[python]>=0.20.0",
+    "mike>=1.1.2",
+    "setuptools>=67.5.1",
+]
+
+[tool.pdm.version]
+source = "file"
+path = "src/{{ cookiecutter.package_name }}/__init__.py"
+
+[tool.pdm.build]
+excludes = ["**/.DS_Store"]
+package-dir = "src"
+source-includes = ["tests", "CHANGELOG.md", "README.md"]
+
+[tool.pdm.scripts]
+pre-commit-install = {cmd = "pre-commit install --install-hooks", help = "Install `pre-commit` hooks"}
+pre-commit-update = {cmd = "pre-commit autoupdate", help = "Update `pre-commit` hooks"}
+
+black = {cmd = "black src", help = "Format the package with `black`"}
+isort = {cmd = "ruff check --select=I001 src", help = "Format the package with `isort`"}
+fmt = {composite = ["black", "isort"], help = "Format with `black` and `isort`"}
+
+lint = {cmd = "ruff check src", help = "Lint the codebase with `ruff`"}
+
+typecheck = {cmd = "mypy src", help = "Typecheck the codebase with `mypy`"}
+
+docs = {cmd = "mike serve --config-file=docs/mkdocs.yml", help = "Preview the documentation locally"}
+
+bump = {cmd = "cz bump --check-consistency", help = "Bump version automatically (run with `--dry-run` to preview the change only)"}
+
+test = {cmd = "pytest --cov=src/{{ cookiecutter.package_name }} --cov-report=term-missing --cov-report=html", help = "Run tests with `pytest`"}
+
+reqs = {cmd = "pdm export --prod -f=requirements.txt", help = "Export production dependencies as `requirements.txt`"}
+
+[tool.ruff]
+src = ["src"]
+target-version = "py{{ cookiecutter.requires_python.replace('.', '') }}"
+line-length = 88
+
+select = [
+  # default
+  "E",      # pycodestyle error
+  "F",      # flake8 error
+  # extra
+  "A",      # builtin shadowing
+  "B",      # flake8 bugbear
+  "BLE",    # aboid bare excepts
+  "C4",     # simplify comprehensions
+  "D",      # pydocstyle
+  "DTZ",    # datetime errors
+  "FBT",    # avoid boolean trap
+  "G",      # logging format
+  "I",      # isort imports
+  "N",      # conform to PEP8 naming rules
+  "RET",    # return values
+  "S",      # bandit
+  "TRY",    # exceptions antipatterns
+  "UP",     # upgade syntax
+  "W",      # pycodestyle warning
+  "YTT",    # wrong usage of sys.info
+]
+fix = true
+ignore = ["D107"]
+
+  [tool.ruff.per-file-ignores]
+  "__init__.py" = ["F401", "I002"]
+
+  [tool.ruff.pydocstyle]
+  convention = "google"
+
+  [tool.ruff.pycodestyle]
+  max-doc-length = 88
+
+  [tool.ruff.isort]
+  required-imports = ["from __future__ import annotations"]
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+version = "0.1.0"
+version_files = ["src/{{ cookiecutter.package_name }}/__init__.py:^__version__"]
+annotated_tag = true
+incremental = true
+update_changelog_on_bump = true
+
+  [tool.commitizen.change_type_map]
+  feat = "⚡ Feat"
+  fix = "🐞 Fix"
+  perf = "🚀 Performance"
+  refactor = "🛠  Refactor"
+  docs = "📚 Docs"
+
+[tool.mypy]
+python_version = "3.9"
+python_executable = ".venv/bin/python"
+show_error_codes = true
+
+check_untyped_defs = true
+disallow_any_unimported = true
+disallow_untyped_defs = true
+no_implicit_optional = true
+warn_return_any = true
+warn_unused_ignores = true
+
+[tool.pytest.ini_options]
+testpaths = "tests"
+pythonpath = "src"
+
+[tool.pyright]
+exclude = [ ".venv" ]
+venvPath = "."
+venv = ".venv"
+
+[build-system]
+requires = ["pdm-pep517>=1.0"]
+build-backend = "pdm.pep517.api"

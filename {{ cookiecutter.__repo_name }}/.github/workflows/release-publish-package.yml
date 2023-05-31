@@ -1,0 +1,26 @@
+{% raw %}
+name: Publish Package
+on:
+  workflow_dispatch:
+  release:
+    types: [published]
+jobs:
+  publish-package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          token: "${{ secrets.PERSONAL_ACCESS_TOKEN }}" # access a private repo
+      - name: Setup PDM
+        uses: pdm-project/setup-pdm@v3
+        with:
+          python-version: 3.9
+          architecture: "x64"
+      - name: Upload Package to GemFury
+        run: |
+          pdm publish \
+            --repository=${{ secrets.PDM_PUBLISH_REPO }} \
+            --username=${{ secrets.PDM_PUBLISH_USERNAME }} \
+            --password=${{ secrets.PDM_PUBLISH_PASSWORD }}
+{% endraw %}

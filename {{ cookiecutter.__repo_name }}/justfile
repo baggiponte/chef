@@ -1,0 +1,44 @@
+setup:
+  git init
+  pdm install --dev
+  pdm run pre-commit install --install-hooks
+
+update:
+  pdm update
+  pdm run pre-commit install-hooks
+  pdm run pre-commit autoupdate
+
+fmt:
+  pdm run pre-commit run black --all-files
+  pdm run pre-commit run blacken-docs --all-files
+  pdm run pre-commit run isort --all-files
+
+lint:
+  pdm run pre-commit run ruff --all-files
+
+typecheck:
+  pdm run mypy --all-files
+
+audit:
+  pdm run pre-commit run pip-audit
+
+check: audit lint typecheck
+
+test:
+  pdm run pytest --cov=src/grader --cov-report=term-missing --cov-report=html
+
+export:
+  pdm export --prod -f=requirements.txt
+
+preview-docs:
+  pdm run mike serve --config-file=docs/mkdocs.yml
+
+preview-bump:
+  pdm run cz bump --check-consistency --dry-run
+
+bump:
+  pdm run cz bump
+  git push
+  git push --tag
+
+release: fmt check bump

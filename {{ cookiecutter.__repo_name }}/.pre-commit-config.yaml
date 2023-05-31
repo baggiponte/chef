@@ -1,0 +1,53 @@
+default_install_hook_types:
+  - pre-commit
+  - pre-push
+default_language_version:
+  python: python{{ cookiecutter.requires_python }}
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: check-yaml
+      - id: check-toml
+      - id: check-json
+      - id: check-added-large-files
+        args: ["--maxkb=5120"]
+  # code formatter
+  - repo: https://github.com/psf/black
+    rev: 23.3.0
+    hooks:
+      - id: black
+        name: black
+  - repo: https://github.com/adamchainz/blacken-docs
+    rev: 1.13.0
+    hooks:
+      - id: blacken-docs
+        additional_dependencies:
+          - black==23.3.0
+  # linter
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: v0.0.267
+    hooks:
+      - id: ruff
+        name: ruff (lint)
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: v0.0.267
+    hooks:
+      - id: ruff
+        alias: isort
+        name: ruff (isort)
+        args: [--select=I001, --fix]
+  # audit dependencies
+  - repo: https://github.com/pypa/pip-audit
+    rev: v2.5.5
+    hooks:
+      - id: pip-audit
+  # check commits follow conventional commits
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: 3.2.2
+    hooks:
+      - id: commitizen-branch
+        stages: [push]
+        args: [--rev-range, origin/main..HEAD]

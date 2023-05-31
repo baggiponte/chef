@@ -1,0 +1,50 @@
+site_name: {{ cookiecutter.__repo_name.replace("-", " ").title() }}
+site_description: |
+  {{ cookiecutter.__package_emoji }}{{ cookiecutter.__package_description }}
+repo_url: https://github.com/{{ cookiecutter.__author_github_handle }}/{{ cookiecutter.__repo_name }}
+repo_name: {{ cookiecutter.__author_github_handle }}/{{ cookiecutter.repo_name }}
+extra_css:
+  - stylesheets/extra.css
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [..]
+  - autorefs
+theme:
+  name: material
+  custom_dir: overrides
+  icon:
+    repo: fontawesome/brands/git-alt
+  palette:
+    - scheme:deepblue
+  features:
+    - search.suggest
+    - search.highlight
+    - navigation.expand
+    - navigation.top
+    - toc.follow
+    - toc.integrate
+markdown_extensions:
+  - admonition # enables callouts
+  - attr_list # add HTML to  markdown inlines/blocks
+  - pymdownx.details # enables collapsible callouts
+  - pymdownx.superfences # arbitrary nesting of code and content blocks
+  - pymdownx.highlight # highlight code
+  - pymdownx.inlinehilite # highlight code
+  - pymdownx.tabbed: # tab panes (e.g. different macos/win snippet)
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+      clickable_checkbox: true
+  - toc:
+      permalink: "#"
+nav:
+  - Home: index.md
+  - Examples: examples.md
+  - API Reference: reference.md
+extra:
+  version:
+    provider: mike
+    default: latest

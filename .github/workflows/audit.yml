@@ -1,0 +1,21 @@
+name: Audit Dependencies
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 6 * * 1"
+jobs:
+  audit-dependencies:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v3
+        with:
+          token: "${{ secrets.PERSONAL_ACCESS_TOKEN }}" # access a private repo
+      - name: Export dependencies
+        run: |
+          pipx run pdm export -f requirements > requirements.txt
+      - name: Audit Dependencies
+        uses: pypa/gh-action-pip-audit@v1.0.6
+        with:
+          inputs: requirements.txt
+          require-hashes: true

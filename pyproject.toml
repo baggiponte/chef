@@ -1,0 +1,34 @@
+[project]
+description = "cookiecutter template for internal packages and production-grade Python code"
+authors = [
+    {name = "{{ cookiecutter.__author_name }}", email = "{{ cookiecutter.author_email }}"},
+]
+requires-python = ">=3.9"
+dependencies = [
+    "requests>=2.31",
+]
+
+[tool.pdm.dev-dependencies]
+release = [
+    "commitizen>=2.42.0",
+]
+docs = [
+    "mkdocs>=1.4.2",
+    "mkdocs-material>=9.0.2",
+    "mike>=1.1.2",
+    "setuptools>=67.5.1",
+]
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+version = "0.12.2"
+annotated_tag = true
+incremental = true
+update_changelog_on_bump = true
+
+  [tool.commitizen.change_type_map]
+  feat = "⚡ Feat"
+  fix = "🐞 Fix"
+  perf = "🚀 Performance"
+  refactor = "🛠  Refactor"
+  docs = "📚 Docs"

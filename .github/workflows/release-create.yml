@@ -1,0 +1,27 @@
+name: Create Release
+on:
+  push:
+    tags:
+      - "*"
+jobs:
+  release-create:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v3
+        with:
+          token: "${{ secrets.PERSONAL_ACCESS_TOKEN }}" # access a private repo
+      - name: Get Release Notes
+        id: get_release_notes
+        run: |
+          awk 'NR>3 && /^## /{exit} {print}' CHANGELOG.md > .release.md
+      - name: Create Release
+        uses: actions/create-release@main
+        env:
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: v${{ github.ref }}
+          body_path: .release.md
+          draft: false
+          prerelease: false

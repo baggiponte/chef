@@ -1,0 +1,54 @@
+site_name: Chef
+site_description: |
+  🍳 Zero-setup, production-grade, standard compliant Python project template
+repo_url: https://github.com/baggiponte/chef
+repo_name: baggiponte/chef
+extra_css:
+  - stylesheets/extra.css
+plugins:
+  - search
+theme:
+  name: material
+  custom_dir: overrides
+  favicon: assets/pan.png
+  icon:
+    logo: material/cookie
+    repo: fontawesome/brands/git-alt
+  palette:
+    - scheme: deepblue
+  features:
+    - content.code.copy
+    - search.suggest
+    - search.highlight
+    - navigation.expand
+    - navigation.top
+    - toc.follow
+    - toc.integrate
+markdown_extensions:
+  - admonition
+  - attr_list
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+      clickable_checkbox: true
+  - toc:
+      permalink: "#"
+nav:
+  - Home: index.md
+  - Feature Overview: overview.md
+  - Tutorial: tutorial.md
+  - Dependency Management: pdm.md
+  - Code Style: style.md
+  - Documentation Style: docs.md
+  - "Commit Style, Versioning and Changelog": commitizen.md
+  - Publish to PyPI: publish.md
+extra:
+  version:
+    provider: mike
+    default: latest
