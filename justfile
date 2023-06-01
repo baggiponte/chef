@@ -17,12 +17,14 @@ export:
 preview-docs:
   pdm run mike serve --config-file=docs/mkdocs.yml
 
-preview-bump:
+check-bump:
   pdm run cz bump --check-consistency --dry-run
 
-bump:
+pre-push: audit check-bump
+
+bump: pre-push
   pdm run cz bump
   git push
   git push --tag
 
-release: audit bump
+alias release := bump
