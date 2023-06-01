@@ -1,3 +1,10 @@
+## 0.1.1 (2023-06-01)
+
+### 🐞 Fix
+
+- remove __ from __author_github_handle
+- add __repo_name var
+
 ## 0.1.0 (2023-05-31)
 
 ### ⚡ Feat
