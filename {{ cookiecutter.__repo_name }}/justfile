@@ -1,5 +1,5 @@
 setup:
-  git init
+  if ! [[ -d .git ]]; then git init; fi
   pdm install --dev
   pdm run pre-commit install --install-hooks
 
@@ -33,12 +33,14 @@ export:
 preview-docs:
   pdm run mike serve --config-file=docs/mkdocs.yml
 
-preview-bump:
+check-bump:
   pdm run cz bump --check-consistency --dry-run
 
-bump:
+pre-push: fmt check check-bump
+
+bump: pre-push
   pdm run cz bump
   git push
   git push --tag
 
-release: fmt check bump
+alias release := bump
