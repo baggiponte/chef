@@ -87,7 +87,7 @@ select = [
   "YTT",    # wrong usage of sys.info
 ]
 fix = true
-ignore = ["D107"]
+ignore = ["D107", "E501", "TRY003"]
 
   [tool.ruff.per-file-ignores]
   "__init__.py" = ["F401", "I002"]
