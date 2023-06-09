@@ -1,9 +1,10 @@
 setup:
-  if ! [[ -d .git ]]; then git init; fi
+  @if ! [[ -d .git ]]; then git init; fi
   pdm install --dev
   pdm run pre-commit install --install-hooks
 
 update:
+  pdm sync
   pdm update
   pdm run pre-commit install-hooks
   pdm run pre-commit autoupdate
