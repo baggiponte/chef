@@ -1,3 +1,9 @@
+## 0.1.4 (2023-06-09)
+
+### 🐞 Fix
+
+- do not echo git init; sync before update in justfile
+
 ## 0.1.3 (2023-06-08)
 
 ### 🐞 Fix
