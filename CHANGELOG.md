@@ -1,3 +1,9 @@
+## 0.1.5 (2023-06-09)
+
+### 🐞 Fix
+
+- fix mypy invocation in justfile
+
 ## 0.1.4 (2023-06-09)
 
 ### 🐞 Fix
