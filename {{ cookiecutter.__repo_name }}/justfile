@@ -18,7 +18,7 @@ lint:
   pdm run pre-commit run ruff --all-files
 
 typecheck:
-  pdm run mypy --all-files
+  pdm run mypy src
 
 audit:
   pdm run pre-commit run pip-audit
