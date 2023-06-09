@@ -14,7 +14,7 @@ fmt:
   pdm run pre-commit run blacken-docs --all-files
   pdm run pre-commit run isort --all-files
 
-lint:
+ruff:
   pdm run pre-commit run ruff --all-files
 
 typecheck:
@@ -23,7 +23,15 @@ typecheck:
 audit:
   pdm run pre-commit run pip-audit
 
-check: audit lint typecheck
+lint: ruff typecheck
+
+check-commits:
+  pdm run cz check --rev-range origin/main..HEAD
+
+check-version:
+  pdm run cz bump --check-consistency --dry-run
+
+pre-release: fmt audit lint check-commits check-version
 
 test:
   pdm run pytest --cov=src/grader --cov-report=term-missing --cov-report=html
@@ -34,14 +42,9 @@ export:
 preview-docs:
   pdm run mike serve --config-file=docs/mkdocs.yml
 
-check-bump:
-  pdm run cz bump --check-consistency --dry-run
-
-pre-push: fmt check check-bump
-
-bump: pre-push
+release: pre-release
   pdm run cz bump
   git push
   git push --tag
 
-alias release := bump
+alias bump := release
