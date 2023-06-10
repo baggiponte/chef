@@ -1,3 +1,9 @@
+## 0.1.8 (2023-06-10)
+
+### 🐞 Fix
+
+- remove scripts from pyproject
+
 ## 0.1.7 (2023-06-09)
 
 ### 🐞 Fix
