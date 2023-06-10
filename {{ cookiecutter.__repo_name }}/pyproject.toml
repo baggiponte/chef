@@ -39,26 +39,6 @@ excludes = ["**/.DS_Store"]
 package-dir = "src"
 source-includes = ["tests", "CHANGELOG.md", "README.md"]
 
-[tool.pdm.scripts]
-pre-commit-install = {cmd = "pre-commit install --install-hooks", help = "Install `pre-commit` hooks"}
-pre-commit-update = {cmd = "pre-commit autoupdate", help = "Update `pre-commit` hooks"}
-
-black = {cmd = "black src", help = "Format the package with `black`"}
-isort = {cmd = "ruff check --select=I001 src", help = "Format the package with `isort`"}
-fmt = {composite = ["black", "isort"], help = "Format with `black` and `isort`"}
-
-lint = {cmd = "ruff check src", help = "Lint the codebase with `ruff`"}
-
-typecheck = {cmd = "mypy src", help = "Typecheck the codebase with `mypy`"}
-
-docs = {cmd = "mike serve --config-file=docs/mkdocs.yml", help = "Preview the documentation locally"}
-
-bump = {cmd = "cz bump --check-consistency", help = "Bump version automatically (run with `--dry-run` to preview the change only)"}
-
-test = {cmd = "pytest --cov=src/{{ cookiecutter.package_name }} --cov-report=term-missing --cov-report=html", help = "Run tests with `pytest`"}
-
-reqs = {cmd = "pdm export --prod -f=requirements.txt", help = "Export production dependencies as `requirements.txt`"}
-
 [tool.ruff]
 src = ["src"]
 target-version = "py{{ cookiecutter.requires_python.replace('.', '') }}"
