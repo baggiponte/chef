@@ -28,7 +28,7 @@
 >
 > **Developer guidelines**
 >
-> - `src` layout is _mandatory_.
+> - The template adopts to the `src` layout.
 > - `mypy` should be configured with the strictest ruleset, though temporary per-module ignores are allowed.
 > - `google` is the docstring style of choice.
 > - `black` is used to format the code, while imports are sorted with `isort` style.
@@ -96,6 +96,58 @@ cruft update
 - `package_description`: a one-line description of the package. It has to be effective and concise, so write it as if it would complete this prompt: "This library contains/offers ...".
 - `package_emoji`: the emoji associated with the project.
 - `requires_python`: the minimal python version required for the project.
+
+## 🤗 Contributing
+
+### Development
+
+1. Clone the repository:
+
+```bash
+# using github cli
+gh repo clone baggiponte/chef
+
+# using git (SSH recommended)
+git clone git@github.com:baggiponte/chef
+```
+
+2. Install `pdm`:
+
+```bash
+pipx install pdm
+```
+3. Install production and development dependencies.
+
+The recommended approach is to use [`just`](https://github.com/casey/just). Install `just` with your favourite package manager, then run the following:
+
+```
+just setup
+```
+
+Alternatively, run the following:
+
+```bash
+pdm install --dev
+pdm run pre-commit install --install-hooks
+```
+
+### Before submitting a PR
+
+Run the following:
+
+```
+just pre-release
+```
+
+The following operations will be performed:
+
+1. Format with `black` and `isort`.
+2. Lint with `ruff`.
+3. Run type checks with `mypy`.
+4. Audit dependencies with `pip-audit`.
+5. Check commit messages are consistent with Conventional Commits using `commitizen`.
+6. Check whether a version bump is possible.
+7. Run all tests.
 
 ## 📚 References and Credits
 
