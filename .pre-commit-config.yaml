@@ -15,14 +15,17 @@ repos:
       - id: check-added-large-files
         args: ["--maxkb=5120"]
   # audit dependencies
-  - repo: https://github.com/pypa/pip-audit
-    rev: v2.5.6
+  - repo: local
     hooks:
       - id: pip-audit
-  # check commits follow conventional commits
-  - repo: https://github.com/commitizen-tools/commitizen
-    rev: 3.2.2
-    hooks:
+        name: pip-audit
+        entry: pdm run pip-audit
+        language: system
+        types: [python]
       - id: commitizen-branch
+        name: commitizen-branch
+        entry: pdm run cz check
+        args: [--rev-range, origin/HEAD..HEAD]
+        language: system
+        types: [python]
         stages: [push]
-        args: [--rev-range, origin/main..HEAD]
