@@ -16,27 +16,24 @@ update:
   pdm run pre-commit autoupdate
 
 # Audit dependencies with pip-audit
-audit:
-  pdm run pre-commit run pip-audit
+@audit:
+  pdm run pip-audit
 
 # Check whether the commit messages follow the conventional commit format
-check-commits:
+@check-commits:
   pdm run cz check --rev-range origin/main..HEAD
 
 # Check the version can be bumped without errors
-check-version:
+@check-version:
   pdm run cz bump --check-consistency --dry-run
 
 # Run all pre-release checks
 pre-release: audit check-commits check-version
 
-# Run all tests
-test:
-  pdm run pytest --cov=src/grader --cov-report=term-missing --cov-report=html
-
 # Export production dependencies to requirements.txt
 export:
-  pdm export --prod -f=requirements.txt
+  pdm export --prod -f=requirements > requirements.txt
+  pdm export --no-default --dev -f=requirements > requirements-dev.txt
 
 # Live preview the documentation
 preview-docs:
