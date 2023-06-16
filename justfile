@@ -8,6 +8,8 @@ setup:
   pdm install --dev
   pdm run pre-commit install --install-hooks
 
+alias init := setup
+
 # Update dependencies and update pre-commit hooks
 update:
   pdm sync
