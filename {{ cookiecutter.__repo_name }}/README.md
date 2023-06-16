@@ -70,7 +70,6 @@ The recommended approach is to use [`just`](https://github.com/casey/just). Inst
 
 ```
 just setup
-
 ```
 
 Alternatively, run the following:
@@ -85,7 +84,7 @@ pdm run pre-commit install --install-hooks
 Run the following:
 
 ```
-just pre-push
+just pre-release
 just test
 ```
 
@@ -96,4 +95,5 @@ The following operations will be performed:
 3. Run type checks with `mypy`.
 4. Audit dependencies with `pip-audit`.
 5. Check commit messages are consistent with Conventional Commits using `commitizen`.
-6. Run all tests.
+6. Check whether a version bump is possible.
+7. Run all tests.
