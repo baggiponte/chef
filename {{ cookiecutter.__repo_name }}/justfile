@@ -16,44 +16,42 @@ update:
   pdm run pre-commit autoupdate
 
 # Format code with black and isort
-fmt:
-  pdm run pre-commit run black --all-files
-  pdm run pre-commit run blacken-docs --all-files
-  pdm run pre-commit run isort --all-files
+@fmt:
+  pdm run black -- src tests
+  pdm run blacken-docs -- src/**/*.py tests/*.py
+  pdm run ruff --select=I001 --fix -- src tests
 
 # Lint the project with Ruff
-ruff:
-  pdm run pre-commit run ruff --all-files
+@lint:
+  pdm run ruff -- src tests
 
 # Perform static type checking with mypy
-typecheck:
-  pdm run mypy src
+@typecheck:
+  pdm run mypy -- src tests
 
 # Audit dependencies with pip-audit
-audit:
-  pdm run pre-commit run pip-audit
-
-# Run the linter and perform static type checking
-lint: ruff typecheck
+@audit:
+  pdm run pip-audit
 
 # Check whether the commit messages follow the conventional commit format
-check-commits:
+@check-commits:
   pdm run cz check --rev-range origin/main..HEAD
 
 # Check the version can be bumped without errors
-check-version:
+@check-version:
   pdm run cz bump --check-consistency --dry-run
 
 # Run all pre-release checks
-pre-release: fmt audit lint check-commits check-version
+pre-release: fmt audit lint typecheck check-commits check-version
 
 # Run all tests
 test:
-  pdm run pytest --cov=src/grader --cov-report=term-missing --cov-report=html
+  pdm run pytest --cov=src/{{ cookiecutter.package_name }} --cov-report=term-missing --cov-report=html
 
 # Export production dependencies to requirements.txt
 export:
-  pdm export --prod -f=requirements.txt
+  pdm export --prod -f=requirements > requirements.txt
+  pdm export --no-default --dev -f=requirements > requirements-dev.txt
 
 # Live preview the documentation
 preview-docs:
