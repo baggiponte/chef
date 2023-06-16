@@ -4,9 +4,6 @@ authors = [
     {name = "{{ cookiecutter.__author_name }}", email = "{{ cookiecutter.author_email }}"},
 ]
 requires-python = ">=3.9"
-dependencies = [
-    "requests>=2.31",
-]
 
 [tool.pdm.dev-dependencies]
 release = [
@@ -17,6 +14,9 @@ docs = [
     "mkdocs-material>=9.0.2",
     "mike>=1.1.2",
     "setuptools>=67.5.1",
+]
+audit = [
+    "pip-audit>=2.5.6",
 ]
 
 [tool.commitizen]
