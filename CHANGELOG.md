@@ -1,3 +1,14 @@
+## 0.2.0 (2023-06-16)
+
+### ⚡ Feat
+
+- run precommit hooks locally
+
+### 🐞 Fix
+
+- **readme**: improve docs
+- **justfile**: init as alias for setup
+
 ## 0.1.8 (2023-06-10)
 
 ### 🐞 Fix
