@@ -13,41 +13,42 @@ repos:
       - id: check-toml
       - id: check-json
       - id: check-added-large-files
-        args: ["--maxkb=5120"]
-  # code formatter
-  - repo: https://github.com/psf/black
-    rev: 23.3.0
+        args: [--maxkb=5120]
+  - repo: local
     hooks:
       - id: black
         name: black
-  - repo: https://github.com/adamchainz/blacken-docs
-    rev: 1.13.0
-    hooks:
+        entry: pdm run black
+        language: system
+        types: [python]
       - id: blacken-docs
-        additional_dependencies:
-          - black==23.3.0
-  # linter
-  - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: v0.0.267
-    hooks:
+        name: blacken-docs
+        entry: pdm run blacken-docs
+        language: system
+        types: [python, tex, markdown, rst]
+        files: '^(src/|docs/|tests/)'
       - id: ruff
-        name: ruff (lint)
-  - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: v0.0.267
-    hooks:
-      - id: ruff
-        alias: isort
         name: ruff (isort)
+        alias: isort
+        entry: pdm run ruff
         args: [--select=I001, --fix]
-  # audit dependencies
-  - repo: https://github.com/pypa/pip-audit
-    rev: v2.5.5
-    hooks:
-      - id: pip-audit
-  # check commits follow conventional commits
-  - repo: https://github.com/commitizen-tools/commitizen
-    rev: 3.2.2
-    hooks:
-      - id: commitizen-branch
+        language: system
+        types: [python]
+      - id: ruff
+        name: ruff
+        entry: pdm run ruff
+        language: system
+        types: [python]
+      - id: mypy
+        name: mypy
+        entry: pdm run mypy
+        language: system
+        types: [python]
+        files: '^(src/|docs/|tests/)'
+      - id: commitizen
+        name: commitizen
+        entry: pdm run cz check
+        args: [--rev-range, origin/HEAD..HEAD]
+        language: system
+        types: [python]
         stages: [push]
-        args: [--rev-range, origin/main..HEAD]
