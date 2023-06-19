@@ -21,7 +21,7 @@ audit = [
 
 [tool.commitizen]
 name = "cz_conventional_commits"
-version = "0.2.0"
+version = "0.3.0"
 annotated_tag = true
 incremental = true
 update_changelog_on_bump = true
