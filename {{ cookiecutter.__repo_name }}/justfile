@@ -34,6 +34,7 @@ update:
 # Audit dependencies with pip-audit
 @audit:
   pdm run pip-audit
+  pdm run deptry -- src
 
 # Check whether the commit messages follow the conventional commit format
 @check-commits:
