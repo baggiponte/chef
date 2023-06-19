@@ -57,7 +57,7 @@ summary = "Cross-platform colored terminal text."
 
 [[package]]
 name = "commitizen"
-version = "3.2.2"
+version = "3.3.0"
 requires_python = ">=3.7,<4.0"
 summary = "Python commitizen client tool"
 dependencies = [
@@ -208,7 +208,7 @@ dependencies = [
 
 [[package]]
 name = "mkdocs-material"
-version = "9.1.15"
+version = "9.1.16"
 requires_python = ">=3.7"
 summary = "Documentation that simply works"
 dependencies = [
@@ -553,9 +553,9 @@ content_hash = "sha256:2d033f9326679e3238f80aa062009921ea9103bda8fa2a15e3121c3eb
     {url = "https://files.pythonhosted.org/packages/d1/d6/3965ed04c63042e047cb6a3e6ed1a63a35087b6a609aa3a15ed8ac56c221/colorama-0.4.6-py2.py3-none-any.whl", hash = "sha256:4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6"},
     {url = "https://files.pythonhosted.org/packages/d8/53/6f443c9a4a8358a93a6792e2acffb9d9d5cb0a5cfd8802644b7b1c9a02e4/colorama-0.4.6.tar.gz", hash = "sha256:08695f5cb7ed6e0531a20572697297273c47b8cae5a63ffc6d6ed5c201be6e44"},
 ]
-"commitizen 3.2.2" = [
-    {url = "https://files.pythonhosted.org/packages/92/f1/6497bf06484f89c15d14a6bd41e38832638aa9b96fa6891209c54da00087/commitizen-3.2.2-py3-none-any.whl", hash = "sha256:1d967de9d1dc3210947fdbe280b34ac184d83dbe35661f21463cf0305fe670ef"},
-    {url = "https://files.pythonhosted.org/packages/c8/28/bc979f5406ed681cd098ae337073f9f3fde70a159aa9dcb16dddf5d57dde/commitizen-3.2.2.tar.gz", hash = "sha256:62e06077e657ab6156baa8656a8d5e54db7c5c3f51feab6ea4d7b867ddeab325"},
+"commitizen 3.3.0" = [
+    {url = "https://files.pythonhosted.org/packages/3c/27/6f3dc4ee17ab940c2a97ec69df7a4179e33ce90108bda305ae6d8af37f32/commitizen-3.3.0-py3-none-any.whl", hash = "sha256:55a5e6dfb7b5815a0708532d63c22ef3433ac0d66a48d8f40a7f9ba7e56c8a2c"},
+    {url = "https://files.pythonhosted.org/packages/fd/26/238263de7aacafab72bae12ffb651281e8e8f70581cfdbb04945b47deb0a/commitizen-3.3.0.tar.gz", hash = "sha256:b1d81366c9e6a3f426dbf72a34de043d826045a382aa8cd9bc7d9289e84e66a8"},
 ]
 "cyclonedx-python-lib 2.7.1" = [
     {url = "https://files.pythonhosted.org/packages/2b/82/85dbbf993d25567399e771057ff6a9ab6ce28515e48246a04a279f8d6561/cyclonedx_python_lib-2.7.1-py3-none-any.whl", hash = "sha256:fabc4c8baf722faeea01c3bbca83730e3489dfb37d85c6036baa67a9a7519d40"},
@@ -665,9 +665,9 @@ content_hash = "sha256:2d033f9326679e3238f80aa062009921ea9103bda8fa2a15e3121c3eb
     {url = "https://files.pythonhosted.org/packages/42/7a/5ed794942ace9d00bb77a8036c64c999cda6ebaab57e9b8a6ec1aa5fc900/mkdocs-1.4.3-py3-none-any.whl", hash = "sha256:6ee46d309bda331aac915cd24aab882c179a933bd9e77b80ce7d2eaaa3f689dd"},
     {url = "https://files.pythonhosted.org/packages/b0/ef/49b4427e5eec761b77a3c3c421d3fd63010e2798b7401dc0fa2b875ef6b5/mkdocs-1.4.3.tar.gz", hash = "sha256:5955093bbd4dd2e9403c5afaf57324ad8b04f16886512a3ee6ef828956481c57"},
 ]
-"mkdocs-material 9.1.15" = [
-    {url = "https://files.pythonhosted.org/packages/12/f0/e25212dc7a0b028ba95f6b2db0ff8efd3317d9631ecd56bcff434212c2fa/mkdocs_material-9.1.15.tar.gz", hash = "sha256:8513ab847c9a541ed3d11a3a7eed556caf72991ee786c31c5aac6691a121088a"},
-    {url = "https://files.pythonhosted.org/packages/48/c7/9f4e97ea777e1dfa8e072cc07299a67509819f2d3da09dccf52d26a2eb4f/mkdocs_material-9.1.15-py3-none-any.whl", hash = "sha256:b49e12869ab464558e2dd3c5792da5b748a7e0c48ee83b4d05715f98125a7a39"},
+"mkdocs-material 9.1.16" = [
+    {url = "https://files.pythonhosted.org/packages/b5/35/96d2fae52aad6e6c0a79a3106ec013f4c4270dfcc52bb01e9cb1895b85ff/mkdocs_material-9.1.16.tar.gz", hash = "sha256:1021bfea20f00a9423530c8c2ae9be3c78b80f5a527b3f822e6de3d872e5ab79"},
+    {url = "https://files.pythonhosted.org/packages/f6/96/91ce1e8305e6ef11139a4ec4ad529323ace81e7a71ca4899a1503847f071/mkdocs_material-9.1.16-py3-none-any.whl", hash = "sha256:f9e62558a6b01ffac314423cbc223d970c25fbc78999860226245b64e64d6751"},
 ]
 "mkdocs-material-extensions 1.1.1" = [
     {url = "https://files.pythonhosted.org/packages/cd/3f/e5e3c9bfbb42e4cb661f71bcec787ae6bdf4a161b8c4bb68fd7d991c436c/mkdocs_material_extensions-1.1.1.tar.gz", hash = "sha256:9c003da71e2cc2493d910237448c672e00cefc800d3d6ae93d2fc69979e3bd93"},

@@ -6,14 +6,14 @@ authors = [
 requires-python = ">=3.9"
 
 [tool.pdm.dev-dependencies]
-release = [
-    "commitizen>=2.42.0",
-]
 docs = [
     "mkdocs>=1.4.2",
     "mkdocs-material>=9.0.2",
     "mike>=1.1.2",
     "setuptools>=67.5.1",
+]
+release = [
+    "commitizen>=2.42.0",
 ]
 audit = [
     "pip-audit>=2.5.6",
