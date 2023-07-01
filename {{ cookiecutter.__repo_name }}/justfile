@@ -1,15 +1,44 @@
+set shell := ["zsh", "-uc"]
+set positional-arguments
+
 # List all available recipes
 help:
   @just --list
 
-# Setup git, install dependencies, install pre-commit hooks
-setup:
-  @if ! [[ -d .git ]]; then git init; fi
+# Create a git repo if not exists, install dependencies and pre-commit hooks
+install:
+  #!/usr/bin/env zsh
+  set -euo pipefail
+  if ! [[ -d .git ]]; then
+    git init
+  fi
+  {% raw %}
+  {{just_executable()}} needs pdm
+  {% endraw %}
   pdm install --dev
   pdm run pre-commit install --install-hooks
 
-alias init := setup
+# Install dependencies, hooks and configure secrets for GitHub Actions
+init repo="pypi": install
+  #!/usr/bin/env zsh
+  set -euo pipefail
+  {% raw %}
+  {{just_executable()}} _needs gh
+  {{just_executable()}} _check-repository {{repo}}
+  {% endraw %}
 
+  if [[ "$#remotes" -eq 0 ]]; then
+    echo "\nThis repo has no remotes. If the remote already exists, add it with:\n"
+    echo "  git remote add origin git@github.com/wearefutura/{{ cookiecutter.__repo_name }}\n"
+    echo "If it does not exist, you can create a new remote repo like this:\n"
+    echo "  gh repo create wearefutura/{{ cookiecutter.__repo_name }} --private --source=. --push"
+    exit 0
+  fi
+  {% raw %}
+  gh secret set PDM_PUBLISH_REPO --body="$(pdm config repository.{{repo}}.url)" --app=actions
+  gh secret set PDM_PUBLISH_USERNAME --body="$(pdm config repository.{{repo}}.username)" --app=actions
+  gh secret set PDM_PUBLISH_PASSWORD --body="$(pdm config repository.{{repo}}.password)" --app=actions
+  {% endraw %}
 # Update dependencies and update pre-commit hooks
 update:
   pdm sync
@@ -36,35 +65,84 @@ update:
   pdm run pip-audit
   pdm run deptry -- src
 
-# Check whether the commit messages follow the conventional commit format
-@check-commits:
-  pdm run cz check --rev-range origin/main..HEAD
-
-# Check the version can be bumped without errors
-@check-version:
-  pdm run cz bump --check-consistency --dry-run
-
 # Run all pre-release checks
-pre-release: fmt audit lint typecheck check-commits check-version
+pre-release: fmt audit lint typecheck check-commits check-bump
+
+# Bump the version
+@bump: check-commits check-bump
+  pdm run cz bump
+
+# Release a new version
+release: fmt audit lint typecheck bump
+  git push
+  git push --tag
+
+# Publish the package to GemFury
+@publish repo="pypi":
+  {% raw %}{{just_executable()}} _check-repository {{repo}}{% endraw %}
+  {% raw %}pdm publish -r={{repo}}{% endraw %}
+
+# Commit with conventional commits
+@commit: check-commits
+  pdm run cz commit
+
+alias c := commit
+
+# Export production dependencies to requirements.txt
+@export:
+  pdm export --prod -f=requirements > requirements.txt
+  pdm export --no-default --dev -f=requirements > requirements-dev.txt
 
 # Run all tests
 test:
   pdm run pytest --cov=src/{{ cookiecutter.package_name }} --cov-report=term-missing --cov-report=html
 
-# Export production dependencies to requirements.txt
-export:
-  pdm export --prod -f=requirements > requirements.txt
-  pdm export --no-default --dev -f=requirements > requirements-dev.txt
-
 # Live preview the documentation
 preview-docs:
   pdm run mike serve --config-file=docs/mkdocs.yml
 
-# Release a new version
-release: pre-release
-  pdm run cz bump
-  git push
-  git push --tag
+# Check whether the commit messages follow the conventional commit format
+check-commits:
+  #! /usr/bin/env zsh
+  set -euo pipefail
 
-# Release a new version
-alias bump := release
+  local revs
+  revs=($(git rev-list origin/main..HEAD))
+
+  if [[ $#revs -eq 0 ]]; then
+    echo "No commits to check."
+    exit 0
+  else
+    pdm run cz check --rev-range origin/main..HEAD
+  fi
+
+# Check the version can be bumped without errors
+@check-bump:
+  pdm run cz bump --dry-run
+
+# Assert a command is available
+_needs *commands:
+  #!/usr/bin/env zsh
+  set -euo pipefail
+  for cmd in "$@"; do
+    if ! command -v $cmd &> /dev/null; then
+      echo "$cmd binary not found. Did you forget to install it?"
+      exit 1
+    fi
+  done
+
+# Check a publishing repo is configured
+_check-repositories *repos:
+  #!/usr/bin/env zsh
+  for repo in "$@"; do
+    local configs
+    configs=($(pdm config repository.$repo)) 2>/dev/null
+    if [[ $#configs -eq 0 ]]; then
+      echo "No repository $repo found."
+      echo "Request the push token, then run:"
+      echo "pdm config repository.$repo.url <url>"
+      echo "pdm config repository.$repo.username <username>"
+      echo "pdm config repository.$repo.password <password>"
+      exit 1
+    fi
+  done
