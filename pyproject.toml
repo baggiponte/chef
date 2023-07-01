@@ -12,11 +12,12 @@ docs = [
     "mike>=1.1.2",
     "setuptools>=67.5.1",
 ]
+precommit = [
+    "pre-commit>=3.3.3",
+    "pip-audit>=2.5.6",
+]
 release = [
     "commitizen>=2.42.0",
-]
-audit = [
-    "pip-audit>=2.5.6",
 ]
 
 [tool.commitizen]
@@ -25,6 +26,7 @@ version = "0.3.0"
 annotated_tag = true
 incremental = true
 update_changelog_on_bump = true
+check_consistency = true
 
   [tool.commitizen.change_type_map]
   feat = "⚡ Feat"
