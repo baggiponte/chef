@@ -91,6 +91,7 @@ version_files = ["src/{{ cookiecutter.package_name }}/__init__.py:^__version__"]
 annotated_tag = true
 incremental = true
 update_changelog_on_bump = true
+check_consistency = true
 
   [tool.commitizen.change_type_map]
   feat = "⚡ Feat"
