@@ -1,3 +1,14 @@
+## 0.4.0 (2023-07-02)
+
+### ⚡ Feat
+
+- **just**: update justfile
+
+### 🐞 Fix
+
+- **chef**: do not pass filenames to cz
+- **chef**: always check consistency with cz
+
 ## 0.3.0 (2023-06-19)
 
 ### ⚡ Feat
