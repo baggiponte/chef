@@ -48,7 +48,8 @@ repos:
       - id: commitizen
         name: commitizen
         entry: pdm run cz check
-        args: [--rev-range, origin/HEAD..HEAD]
+        pass_filenames: false
+        args: [--rev-range, origin/main..HEAD]
         language: system
         types: [python]
         stages: [push]
