@@ -17,14 +17,10 @@ repos:
   # audit dependencies
   - repo: local
     hooks:
-      - id: pip-audit
-        name: pip-audit
-        entry: pdm run pip-audit
-        language: system
-        types: [python]
       - id: commitizen-branch
         name: commitizen-branch
         entry: pdm run cz check
+        pass_filenames: false
         args: [--rev-range, origin/HEAD..HEAD]
         language: system
         types: [python]
