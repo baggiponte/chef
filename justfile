@@ -24,7 +24,7 @@ init repo="pypi": install
   set -euo pipefail
 
   {{just_executable()}} needs gh
-  {{just_executable()}} check-repositories {{repo}}
+  {{just_executable()}} check-repository {{repo}}
 
   local remotes
   remotes=($(git remote))
@@ -117,7 +117,7 @@ needs +commands:
 
 # Check a publishing repo is configured
 [private]
-check-repositories +repos:
+check-repository +repos:
   #!/usr/bin/env zsh
   for repo in "$@"; do
     local configs 1>/dev/null
