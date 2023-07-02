@@ -1,3 +1,9 @@
+## 0.4.2 (2023-07-02)
+
+### 🐞 Fix
+
+- **just**: fix check-repository recipe
+
 ## 0.4.1 (2023-07-02)
 
 ### 🐞 Fix
