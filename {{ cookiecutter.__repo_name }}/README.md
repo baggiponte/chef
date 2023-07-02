@@ -18,25 +18,23 @@
 
 ## ⚡ Features
 
-`{{ cookiecutter.__repo_name }}` offers {{ cookiecutter.__package_description.lower() }}.
+`{{ cookiecutter.__repo_name }}` is a {{ cookiecutter.__package_description.lower() }}.
 
 ## 📦 How to install
+
+`{{ cookiecutter.__repo_name }}` can be installed with any package manager of your choice, though we use [`pdm`](https://pdm.fming.dev/latest/) for development.
 
 ```bash
 pdm add {{ cookiecutter.__repo_name }}
 ```
 
-## 💻 Example Usage
-
-## 📚 Code Guidelines and Project Layout
-
-Please check the documentation.
-
 ## 🤗 Contributing
 
 ### Development
 
-1. Clone the repository:
+1. Install `pdm` and [`just`](https://github.com/casey/just#installation).
+
+2. Clone the repository:
 
 ```bash
 # using github cli
@@ -66,17 +64,8 @@ pipx install pdm
 
 3. Install production and development dependencies.
 
-The recommended approach is to use [`just`](https://github.com/casey/just). Install `just` with your favourite package manager, then run the following:
-
 ```
-just setup
-```
-
-Alternatively, run the following:
-
-```bash
-pdm install --dev
-pdm run pre-commit install --install-hooks
+just install
 ```
 
 ### Before submitting a PR
