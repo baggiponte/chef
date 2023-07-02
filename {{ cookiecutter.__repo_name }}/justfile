@@ -23,8 +23,8 @@ init repo="pypi": install
   #!/usr/bin/env zsh
   set -euo pipefail
   {% raw %}
-  {{just_executable()}} _needs gh
-  {{just_executable()}} _check-repository {{repo}}
+  {{just_executable()}} needs gh
+  {{just_executable()}} check-repository {{repo}}
   {% endraw %}
 
   if [[ "$#remotes" -eq 0 ]]; then
@@ -79,7 +79,7 @@ release: fmt audit lint typecheck bump
 
 # Publish the package to GemFury
 @publish repo="pypi":
-  {% raw %}{{just_executable()}} _check-repository {{repo}}{% endraw %}
+  {% raw %}{{just_executable()}} check-repository {{repo}}{% endraw %}
   {% raw %}pdm publish -r={{repo}}{% endraw %}
 
 # Commit with conventional commits
@@ -121,7 +121,7 @@ check-commits:
   pdm run cz bump --dry-run
 
 # Assert a command is available
-_needs *commands:
+needs *commands:
   #!/usr/bin/env zsh
   set -euo pipefail
   for cmd in "$@"; do
@@ -132,7 +132,7 @@ _needs *commands:
   done
 
 # Check a publishing repo is configured
-_check-repositories *repos:
+check-repository *repos:
   #!/usr/bin/env zsh
   for repo in "$@"; do
     local configs
