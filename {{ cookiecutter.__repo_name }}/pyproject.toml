@@ -2,7 +2,7 @@
 name = "{{ cookiecutter.__repo_name }}"
 description = "{{ cookiecutter.__package_emoji }}{{ cookiecutter.__package_description }}"
 authors = [
-    {name = "{{ cookiecutter.__author_name }}", email = "<{{ cookiecutter.author_email }}>"},
+    {name = "{{ cookiecutter.__author_name }}", email = "{{ cookiecutter.author_email }}"},
 ]
 dynamic = ["version"]
 readme = "README.md"
