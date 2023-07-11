@@ -18,8 +18,8 @@ install:
   pdm install --dev
   pdm run pre-commit install --install-hooks
 
-# Install dependencies, hooks and configure secrets for GitHub Actions
-init repo="pypi": install
+# Configure git repo, GitHub and GitHub Actions
+config repo="pypi":
   #!/usr/bin/env zsh
   set -euo pipefail
   {% raw %}
@@ -78,6 +78,9 @@ init repo="pypi": install
   gh secret set PDM_PUBLISH_USERNAME --body="$(pdm config repository.{{repo}}.username)" --app=actions
   gh secret set PDM_PUBLISH_PASSWORD --body="$(pdm config repository.{{repo}}.password)" --app=actions
   {% endraw %}
+# Install dependencies and configure CI/CD with Github Actions
+init: install config
+
 # Update dependencies and update pre-commit hooks
 update:
   pdm sync
