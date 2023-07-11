@@ -25,7 +25,7 @@ init repo="pypi": install
   {% raw %}
   {{just_executable()}} needs gh
   {{just_executable()}} check-repository {{repo}}
-
+  {% endraw %}
   if ! gh repo list | grep -qc baggiponte/chef; then
     while true; do
       read -r "No remote repository found. Do you want to create a new repository? (y/n): " REPLY
@@ -73,6 +73,7 @@ init repo="pypi": install
     done
   fi
 
+  {% raw %}
   gh secret set PDM_PUBLISH_REPO --body="$(pdm config repository.{{repo}}.url)" --app=actions
   gh secret set PDM_PUBLISH_USERNAME --body="$(pdm config repository.{{repo}}.username)" --app=actions
   gh secret set PDM_PUBLISH_PASSWORD --body="$(pdm config repository.{{repo}}.password)" --app=actions
