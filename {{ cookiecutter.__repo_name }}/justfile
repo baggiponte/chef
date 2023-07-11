@@ -26,7 +26,7 @@ config repo="pypi":
   {{just_executable()}} needs gh
   {{just_executable()}} check-repository {{repo}}
   {% endraw %}
-  if ! gh repo list | grep -qc baggiponte/chef; then
+  if ! gh repo list | grep -qc {{ cookiecutter.author_github_handle }}/{{ cookiecutter.__repo_name }}; then
     while true; do
       echo -n "No remote repository found. Do you want to create a new repository? (y/n): "
       read -r REPLY
