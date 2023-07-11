@@ -1,3 +1,9 @@
+## 0.5.5 (2023-07-11)
+
+### 🐞 Fix
+
+- **just**: replace wrong repo name with cookiecutter values
+
 ## 0.5.4 (2023-07-11)
 
 ### 🛠  Refactor
