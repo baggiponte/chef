@@ -19,5 +19,5 @@ jobs:
       - uses: taiki-e/create-gh-release-action@v1
         with:
           changelog: CHANGELOG.md
-          token: ${{ secrets.FUTURA_GH_ACCESS_TOKEN }} # required
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }} # required
           branch: main                                # accept only main branch
