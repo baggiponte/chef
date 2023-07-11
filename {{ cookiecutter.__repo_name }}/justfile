@@ -9,9 +9,6 @@ help:
 install:
   #!/usr/bin/env zsh
   set -euo pipefail
-  if ! [[ -d .git ]]; then
-    git init
-  fi
   {% raw %}
   {{just_executable()}} needs pdm
   {% endraw %}
@@ -22,23 +19,28 @@ install:
 config repo="pypi":
   #!/usr/bin/env zsh
   set -euo pipefail
+  if ! [[ -d .git ]]; then
+    git init
+  fi
   {% raw %}
   {{just_executable()}} needs gh
   {{just_executable()}} check-repository {{repo}}
   {% endraw %}
   if ! gh repo list | grep -qc baggiponte/chef; then
     while true; do
-      read -r "No remote repository found. Do you want to create a new repository? (y/n): " REPLY
+      echo -n "No remote repository found. Do you want to create a new repository? (y/n): "
+      read -r REPLY
 
       case $REPLY in
         [Yy])
-          read -r "Do you want to create a private repository? (y/n): " PRIVATE
+          echo -n "Do you want to create a private repository? (y/n): "
+          read -r PRIVATE
           case $PRIVATE in
             [Yy])
-              gh repo create {{ cookiecutter.author_github_handle }}/{{ cookiecutter.__repo_name }} --private --source=. --push
+              gh repo create {{ cookiecutter.author_github_handle }}/{{ cookiecutter.__repo_name }} --private --source=.
               ;;
             [Nn])
-              gh repo create {{ cookiecutter.author_github_handle }}/{{ cookiecutter.__repo_name }}--public --source=. --push
+              gh repo create {{ cookiecutter.author_github_handle }}/{{ cookiecutter.__repo_name }} --public --source=.
               ;;
             *)
               echo "Invalid input. Please enter 'y' or 'n'."
