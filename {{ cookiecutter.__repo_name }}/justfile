@@ -58,7 +58,7 @@ config repo="pypi":
     done
   elif ! git remote get-url origin 1>/dev/null; then
     while true; do
-      read -r "A repo with the same name already exists. Do you want to add it as a remote? (y/n): " REPLY
+      read -r "A repo with this name already exists. Do you want to add it as a remote? (y/n): " REPLY
 
       case $REPLY in
         [Yy])
