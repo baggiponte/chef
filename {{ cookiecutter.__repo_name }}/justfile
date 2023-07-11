@@ -30,7 +30,7 @@ config repo="pypi":
   {% endraw %}
 
   echo "You still need to configure manually the PERSONAL_ACCESS_TOKEN. You can set it with:"
-  echo "gh secret set PERSONAL_ACCESS_TOKEN --body=<your token> --app=actions"
+  echo "gh secret set PERSONAL_ACCESS_TOKEN --body=<token> --app=actions"
   echo "⚠️ Do not pass the token as plain text, or it will persist in your shell history!"
 
 # Install dependencies and configure CI/CD with Github Actions
