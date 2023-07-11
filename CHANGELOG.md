@@ -1,3 +1,12 @@
+## 0.5.6 (2023-07-11)
+
+### 🛠  Refactor
+
+- **just**: improve warning message
+- **ci**: use grep --quiet instead of -q
+- **just**: extract a private recipe from config
+- **just**: add message to configure remaining secret
+
 ## 0.5.5 (2023-07-11)
 
 ### 🐞 Fix
