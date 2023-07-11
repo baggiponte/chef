@@ -25,7 +25,7 @@ jobs:
           git config --local user.name "GitHub Action"
 
           if ! git ls-remote --heads origin gh-pages \
-            | grep -q 'refs/heads/gh-pages'; then
+            | grep --quiet 'refs/heads/gh-pages'; then
             git checkout -b gh-pages
             git push -u origin gh-pages
           else

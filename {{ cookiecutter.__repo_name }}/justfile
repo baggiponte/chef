@@ -154,7 +154,7 @@ ensure-repo:
     git init
   fi
 
-  if ! gh repo list | grep -qc {{ cookiecutter.author_github_handle }}/{{ cookiecutter.__repo_name }}; then
+  if ! gh repo list {{ cookiecutter.author_github_handle }} | grep --quiet {{ cookiecutter.__repo_name }}; then
     while true; do
       echo -n "No remote repository found. Do you want to create a new repository? (y/n): "
       read -r REPLY
