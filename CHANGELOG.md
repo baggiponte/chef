@@ -1,3 +1,9 @@
+## 0.5.2 (2023-07-11)
+
+### 🛠  Refactor
+
+- **just**: split init in install and config
+
 ## 0.5.1 (2023-07-11)
 
 ### 🐞 Fix
