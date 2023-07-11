@@ -1,3 +1,12 @@
+## 0.5.3 (2023-07-11)
+
+### 🐞 Fix
+
+- **just**: echo message before input
+- **just**: create local repo in config recipe
+- **just**: do not push in config recipe
+- **just**: remove whitespace
+
 ## 0.5.2 (2023-07-11)
 
 ### 🛠  Refactor
