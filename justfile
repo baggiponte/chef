@@ -18,28 +18,73 @@ install:
   pdm install --dev
   pdm run pre-commit install --install-hooks
 
-# Install dependencies, hooks and configure secrets for GitHub Actions
-init repo="pypi": install
+# Configure GitHub Actions
+config repo="pypi":
   #!/usr/bin/env zsh
   set -euo pipefail
 
-  {{just_executable()}} needs gh
+  {{just_executable()}} needs gh grep
   {{just_executable()}} check-repository {{repo}}
 
-  local remotes
-  remotes=($(git remote))
+  if ! gh repo list | grep -qc baggiponte/chef; then
+    while true; do
+      read -r "No remote repository found. Do you want to create a new repository? (y/n): " REPLY
 
-  if [[ "$#remotes" -eq 0 ]]; then
-    echo "\nThis repo has no remotes. If the remote already exists, add it with:\n"
-    echo "  git remote add origin git@github.com/baggiponte/chef\n"
-    echo "If it does not exist, you can create a new remote repo like this:\n"
-    echo "  gh repo create baggiponte/chef --private --source=. --push"
-    exit 0
+      case $REPLY in
+        [Yy])
+          read -r "Do you want to create a private repository? (y/n): " PRIVATE
+          case $PRIVATE in
+            [Yy])
+              gh repo create baggiponte/chef --private --source=. --push
+              ;;
+            [Nn])
+              gh repo create baggiponte/chef --public --source=. --push
+              ;;
+            *)
+              echo "Invalid input. Please enter 'y' or 'n'."
+              ;;
+          esac
+          break
+          ;;
+        [Nn])
+          exit 0
+          ;;
+        *)
+          echo "Invalid input. Please enter 'y' or 'n'."
+          ;;
+      esac
+    done
+  elif ! git remote get-url origin 1>/dev/null; then
+    while true; do
+      read -r "A repo with the same name already exists. Do you want to add it as a remote? (y/n): " REPLY
+
+      case $REPLY in
+        [Yy])
+          git remote add origin git@github.com:baggiponte/chef
+          break
+          ;;
+        [Nn])
+          exit 0
+          ;;
+        *)
+          echo "Invalid input. Please enter 'y' or 'n'."
+          ;;
+      esac
+    done
   fi
 
   gh secret set PDM_PUBLISH_REPO --body="$(pdm config repository.{{repo}}.url)" --app=actions
   gh secret set PDM_PUBLISH_USERNAME --body="$(pdm config repository.{{repo}}.username)" --app=actions
   gh secret set PDM_PUBLISH_PASSWORD --body="$(pdm config repository.{{repo}}.password)" --app=actions
+
+  if [[ $(gh secret list | grep -c PERSONAL_ACCESS_TOKEN ) -eq 0 ]]; then
+    echo "You need to set a PERSONAL_ACCESS_TOKEN secret for the workflow to work.\n"
+    echo "This cannot be done automatically, but you can do it manually:\n"
+    echo "gh secret set PERSONAL_ACCESS_TOKEN --body=<your token> --app=actions\n"
+    echo "⚠️ If you do this, though, the token will persist in your shell history."
+
+# Install dependencies, hooks and configure secrets for GitHub Actions
+init: config install
 
 # Update dependencies and update pre-commit hooks
 update:
