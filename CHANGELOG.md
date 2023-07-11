@@ -1,3 +1,9 @@
+## 0.4.4 (2023-07-11)
+
+### 🐞 Fix
+
+- **readme**: improve package installation docs
+
 ## 0.4.3 (2023-07-10)
 
 ### 🐞 Fix
