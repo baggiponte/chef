@@ -28,6 +28,30 @@
 pdm add {{ cookiecutter.__repo_name }}
 ```
 
+If you need to install the unstable version, run:
+
+```bash
+# install from the main branch
+pdm add git+ssh://git@github.com/{{ cookiecutter.author_github_handle }}/{{ cookiecutter.__repo_name }}
+```
+
+This is the same for any other package manager (e.g. `pip`, `poetry`...).
+
+> **Note**
+>
+> 🎬 Install over SSH
+>
+> Under the hood, you package manager will still clone the repository. Cloning over SSH is safer: to set it up, follow [this guide](https://www.youtube.com/watch?v=5o9ltH6YmtM). Alternatively, you can follow the steps in [this](https://github.com/git-merge-workshops/simplify-signing-with-ssh/blob/main/exercises/01-setup-workstation.md) workshop of GitHub's.
+
+In case you need to install a specific commit, branch or tag, you can use the following notation:
+
+```bash
+# install a specific commit, tag, branch
+pdm add git+ssh://git@github.com/{{ cookiecutter.author_github_handle }}/{{ cookiecutter.__repo_name }}@<revision>
+```
+
+Where `<revision>` can be a commit hash, branch name, tag. This is especially useful when you want to test a feature branch.
+
 ## 🤗 Contributing
 
 ### Development
