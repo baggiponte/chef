@@ -22,7 +22,7 @@ release = [
 
 [tool.commitizen]
 name = "cz_conventional_commits"
-version = "0.5.0"
+version = "0.5.1"
 annotated_tag = true
 incremental = true
 update_changelog_on_bump = true

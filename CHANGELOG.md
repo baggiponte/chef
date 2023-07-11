@@ -1,3 +1,9 @@
+## 0.5.1 (2023-07-11)
+
+### 🐞 Fix
+
+- **just**: use raw/endraw in the correct place
+
 ## 0.5.0 (2023-07-11)
 
 ### ⚡ Feat
