@@ -25,16 +25,54 @@ init repo="pypi": install
   {% raw %}
   {{just_executable()}} needs gh
   {{just_executable()}} check-repository {{repo}}
-  {% endraw %}
 
-  if [[ "$#remotes" -eq 0 ]]; then
-    echo "\nThis repo has no remotes. If the remote already exists, add it with:\n"
-    echo "  git remote add origin git@github.com/wearefutura/{{ cookiecutter.__repo_name }}\n"
-    echo "If it does not exist, you can create a new remote repo like this:\n"
-    echo "  gh repo create wearefutura/{{ cookiecutter.__repo_name }} --private --source=. --push"
-    exit 0
+  if ! gh repo list | grep -qc baggiponte/chef; then
+    while true; do
+      read -r "No remote repository found. Do you want to create a new repository? (y/n): " REPLY
+
+      case $REPLY in
+        [Yy])
+          read -r "Do you want to create a private repository? (y/n): " PRIVATE
+          case $PRIVATE in
+            [Yy])
+              gh repo create {{ cookiecutter.author_github_handle }}/{{ cookiecutter.__repo_name }} --private --source=. --push
+              ;;
+            [Nn])
+              gh repo create {{ cookiecutter.author_github_handle }}/{{ cookiecutter.__repo_name }}--public --source=. --push
+              ;;
+            *)
+              echo "Invalid input. Please enter 'y' or 'n'."
+              ;;
+          esac
+          break
+          ;;
+        [Nn])
+          exit 0
+          ;;
+        *)
+          echo "Invalid input. Please enter 'y' or 'n'."
+          ;;
+      esac
+    done
+  elif ! git remote get-url origin 1>/dev/null; then
+    while true; do
+      read -r "A repo with the same name already exists. Do you want to add it as a remote? (y/n): " REPLY
+
+      case $REPLY in
+        [Yy])
+          git remote add origin git@github.com:{{ cookiecutter.author_github_handle }}/{{ cookiecutter.__repo_name }}
+          break
+          ;;
+        [Nn])
+          exit 0
+          ;;
+        *)
+          echo "Invalid input. Please enter 'y' or 'n'."
+          ;;
+      esac
+    done
   fi
-  {% raw %}
+
   gh secret set PDM_PUBLISH_REPO --body="$(pdm config repository.{{repo}}.url)" --app=actions
   gh secret set PDM_PUBLISH_USERNAME --body="$(pdm config repository.{{repo}}.username)" --app=actions
   gh secret set PDM_PUBLISH_PASSWORD --body="$(pdm config repository.{{repo}}.password)" --app=actions
