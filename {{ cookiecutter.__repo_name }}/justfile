@@ -19,67 +19,20 @@ install:
 config repo="pypi":
   #!/usr/bin/env zsh
   set -euo pipefail
-  if ! [[ -d .git ]]; then
-    git init
-  fi
   {% raw %}
-  {{just_executable()}} needs gh
+  {{just_executable()}} needs gh grep
   {{just_executable()}} check-repository {{repo}}
-  {% endraw %}
-  if ! gh repo list | grep -qc {{ cookiecutter.author_github_handle }}/{{ cookiecutter.__repo_name }}; then
-    while true; do
-      echo -n "No remote repository found. Do you want to create a new repository? (y/n): "
-      read -r REPLY
+  {{just_executable()}} ensure-repo
 
-      case $REPLY in
-        [Yy])
-          echo -n "Do you want to create a private repository? (y/n): "
-          read -r PRIVATE
-          case $PRIVATE in
-            [Yy])
-              gh repo create {{ cookiecutter.author_github_handle }}/{{ cookiecutter.__repo_name }} --private --source=.
-              ;;
-            [Nn])
-              gh repo create {{ cookiecutter.author_github_handle }}/{{ cookiecutter.__repo_name }} --public --source=.
-              ;;
-            *)
-              echo "Invalid input. Please enter 'y' or 'n'."
-              ;;
-          esac
-          break
-          ;;
-        [Nn])
-          exit 0
-          ;;
-        *)
-          echo "Invalid input. Please enter 'y' or 'n'."
-          ;;
-      esac
-    done
-  elif ! git remote get-url origin 1>/dev/null; then
-    while true; do
-      read -r "A repo with this name already exists. Do you want to add it as a remote? (y/n): " REPLY
-
-      case $REPLY in
-        [Yy])
-          git remote add origin git@github.com:{{ cookiecutter.author_github_handle }}/{{ cookiecutter.__repo_name }}
-          break
-          ;;
-        [Nn])
-          exit 0
-          ;;
-        *)
-          echo "Invalid input. Please enter 'y' or 'n'."
-          ;;
-      esac
-    done
-  fi
-
-  {% raw %}
   gh secret set PDM_PUBLISH_REPO --body="$(pdm config repository.{{repo}}.url)" --app=actions
   gh secret set PDM_PUBLISH_USERNAME --body="$(pdm config repository.{{repo}}.username)" --app=actions
   gh secret set PDM_PUBLISH_PASSWORD --body="$(pdm config repository.{{repo}}.password)" --app=actions
   {% endraw %}
+
+  echo "You still need to configure manually the PERSONAL_ACCESS_TOKEN. You can set it with:"
+  echo "gh secret set PERSONAL_ACCESS_TOKEN --body=<your token> --app=actions"
+  echo "⚠️ Do not pass the token as plain text, or it will persist in your shell history!"
+
 # Install dependencies and configure CI/CD with Github Actions
 init: install config
 
@@ -165,6 +118,7 @@ check-commits:
   pdm run cz bump --dry-run
 
 # Assert a command is available
+[private]
 needs *commands:
   #!/usr/bin/env zsh
   set -euo pipefail
@@ -176,6 +130,7 @@ needs *commands:
   done
 
 # Check a publishing repo is configured
+[private]
 check-repository *repos:
   #!/usr/bin/env zsh
   for repo in "$@"; do
@@ -190,3 +145,60 @@ check-repository *repos:
       exit 1
     fi
   done
+
+# Ensure that the remote repo exists
+[private]
+ensure-repo:
+  #! /usr/bin/env zsh
+  if ! [[ -d .git ]]; then
+    git init
+  fi
+
+  if ! gh repo list | grep -qc {{ cookiecutter.author_github_handle }}/{{ cookiecutter.__repo_name }}; then
+    while true; do
+      echo -n "No remote repository found. Do you want to create a new repository? (y/n): "
+      read -r REPLY
+
+      case $REPLY in
+        [Yy])
+          echo -n "Do you want to create a private repository? (y/n): "
+          read -r PRIVATE
+          case $PRIVATE in
+            [Yy])
+              gh repo create {{ cookiecutter.author_github_handle }}/{{ cookiecutter.__repo_name }} --private --source=.
+              ;;
+            [Nn])
+              gh repo create {{ cookiecutter.author_github_handle }}/{{ cookiecutter.__repo_name }} --public --source=.
+              ;;
+            *)
+              echo "Invalid input. Please enter 'y' or 'n'."
+              ;;
+          esac
+          break
+          ;;
+        [Nn])
+          exit 0
+          ;;
+        *)
+          echo "Invalid input. Please enter 'y' or 'n'."
+          ;;
+      esac
+    done
+  elif ! git remote get-url origin 1>/dev/null; then
+    while true; do
+      read -r "A repo with this name already exists. Do you want to add it as a remote? (y/n): " REPLY
+
+      case $REPLY in
+        [Yy])
+          git remote add origin git@github.com:{{ cookiecutter.author_github_handle }}/{{ cookiecutter.__repo_name }}
+          break
+          ;;
+        [Nn])
+          exit 0
+          ;;
+        *)
+          echo "Invalid input. Please enter 'y' or 'n'."
+          ;;
+      esac
+    done
+  fi
