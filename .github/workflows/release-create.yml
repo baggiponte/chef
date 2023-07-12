@@ -5,6 +5,8 @@ permissions:
 
 on:
   push:
+    branches:
+      - main
     tags:
       - "*"
 
@@ -20,4 +22,3 @@ jobs:
         with:
           changelog: CHANGELOG.md
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }} # required
-          branch: main                                # accept only main branch
