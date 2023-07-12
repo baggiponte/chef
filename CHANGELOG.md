@@ -1,3 +1,9 @@
+## 0.5.7 (2023-07-12)
+
+### 🛠  Refactor
+
+- **ci**: run taiki-e action to create release
+
 ## 0.5.6 (2023-07-11)
 
 ### 🛠  Refactor
