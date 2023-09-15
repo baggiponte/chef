@@ -7,7 +7,7 @@
   "package_name": "{{ cookiecutter.__repo_name.replace('-', '_') }}",
   "package_description": "",
   "package_emoji": "",
-  "requires_python": "3.9",
+  "requires_python": "",
   "__author_name": "{{ cookiecutter.author_name.title() }}",
   "__package_description": "{{ cookiecutter.package_description.capitalize() }}",
   "__package_emoji": "{{ cookiecutter.package_emoji ~ ' ' if cookiecutter.package_emoji }}"
