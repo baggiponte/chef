@@ -158,9 +158,10 @@ ensure-github:
           ;;
       esac
     done
-  elif ! git remote get-url origin 1>/dev/null; then
+  else 
     while true; do
-      read -r "A repo with this name already exists. Do you want to add it as a remote? (y/n): " REPLY
+      print -n "A repo with this name already exists. Do you want to add it as a remote? (y/n): "
+      read -r REPLY
 
       case $REPLY in
         [Yy])
