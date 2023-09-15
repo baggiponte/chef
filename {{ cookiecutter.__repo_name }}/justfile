@@ -2,44 +2,36 @@ set shell := ["zsh", "-uc"]
 set positional-arguments
 
 # List all available recipes
-help:
-  @just --list
+@help:
+  just --list
 
 # Create a git repo if not exists, install dependencies and pre-commit hooks
-install:
-  #!/usr/bin/env zsh
-  set -euo pipefail
-  {% raw %}
-  {{just_executable()}} needs pdm
-  {% endraw %}
-  pdm install --dev
+@install:
+  {% raw %}{{just_executable()}} needs pdm{% endraw %}
+
+  print "Installing dependencies..."
+  pdm install --group=:all --dev 
+
+  print "Installing pre-commit hooks..."
   pdm run pre-commit install --install-hooks
 
-# Configure git repo, GitHub and GitHub Actions
-config repo="pypi":
-  #!/usr/bin/env zsh
-  set -euo pipefail
-  {% raw %}
-  {{just_executable()}} needs gh grep
-  {{just_executable()}} check-repository {{repo}}
-  {{just_executable()}} ensure-repo
-
-  gh secret set PDM_PUBLISH_REPO --body="$(pdm config repository.{{repo}}.url)" --app=actions
-  gh secret set PDM_PUBLISH_USERNAME --body="$(pdm config repository.{{repo}}.username)" --app=actions
-  gh secret set PDM_PUBLISH_PASSWORD --body="$(pdm config repository.{{repo}}.password)" --app=actions
-  {% endraw %}
-
-  echo "You still need to configure manually the PERSONAL_ACCESS_TOKEN. You can set it with:"
-  echo "gh secret set PERSONAL_ACCESS_TOKEN --body=<token> --app=actions"
-  echo "⚠️ Do not pass the token as plain text, or it will persist in your shell history!"
-
 # Install dependencies and configure CI/CD with Github Actions
-init: install config
+init: ensure-git ensure-github install
+  print "To enable CI/CD workflows, you need to configure the PERSONAL_ACCESS_TOKEN manually. You can set it with:"
+  print "gh secret set PERSONAL_ACCESS_TOKEN --body=<token> --app=actions"
+  print "⚠️ Do not pass the token as plain text, or it will persist in your shell history!"
+
+# Update the lockfile (e.g. after manually editing `pyproject.toml`)
+@lock:
+  pdm lock
+  pdm sync --clean
 
 # Update dependencies and update pre-commit hooks
-update:
-  pdm sync
+@update: lock
+  print "Updating dependencies..."
   pdm update
+
+  print "Updating pre-commit hooks..."
   pdm run pre-commit install-hooks
   pdm run pre-commit autoupdate
 
@@ -60,10 +52,10 @@ update:
 # Audit dependencies with pip-audit
 @audit:
   pdm run pip-audit
-  pdm run deptry -- src
+  pdm run deptry -- src tests
 
 # Run all pre-release checks
-pre-release: fmt audit lint typecheck check-commits check-bump
+pre-release: fmt lint typecheck audit check-commits check-bump
 
 # Bump the version
 @bump: check-commits check-bump
@@ -80,7 +72,7 @@ release: fmt audit lint typecheck bump
   {% raw %}pdm publish -r={{repo}}{% endraw %}
 
 # Commit with conventional commits
-@commit: check-commits
+@commit:
   pdm run cz commit
 
 alias c := commit
@@ -107,7 +99,7 @@ check-commits:
   revs=($(git rev-list origin/main..HEAD))
 
   if [[ $#revs -eq 0 ]]; then
-    echo "No commits to check."
+    print "No commits to check."
     exit 0
   else
     pdm run cz check --rev-range origin/main..HEAD
@@ -124,44 +116,31 @@ needs *commands:
   set -euo pipefail
   for cmd in "$@"; do
     if ! command -v $cmd &> /dev/null; then
-      echo "$cmd binary not found. Did you forget to install it?"
+      print "$cmd binary not found. Did you forget to install it?"
       exit 1
     fi
   done
 
-# Check a publishing repo is configured
+# Create a local git repo if not in one
 [private]
-check-repository *repos:
-  #!/usr/bin/env zsh
-  for repo in "$@"; do
-    local configs
-    configs=($(pdm config repository.$repo)) 2>/dev/null
-    if [[ $#configs -eq 0 ]]; then
-      echo "No repository $repo found."
-      echo "Request the push token, then run:"
-      echo "pdm config repository.$repo.url <url>"
-      echo "pdm config repository.$repo.username <username>"
-      echo "pdm config repository.$repo.password <password>"
-      exit 1
-    fi
-  done
-
-# Ensure that the remote repo exists
-[private]
-ensure-repo:
+ensure-git:
   #! /usr/bin/env zsh
   if ! [[ -d .git ]]; then
     git init
   fi
 
-  if ! gh repo list {{ cookiecutter.author_github_handle }} | grep --quiet {{ cookiecutter.__repo_name }}; then
+# Ask to create a remote repo if not exists
+[private]
+ensure-github:
+  #! /usr/bin/env zsh
+  if ! gh repo list {{ cookiecutter.author_github_handle }} | grep --quiet "/\b{{ cookiecutter.__repo_name }}\b"; then
     while true; do
-      echo -n "No remote repository found. Do you want to create a new repository? (y/n): "
+      print -n "No remote repository found. Do you want to create a new repository? (y/n): "
       read -r REPLY
 
       case $REPLY in
         [Yy])
-          echo -n "Do you want to create a private repository? (y/n): "
+          print -n "Do you want to create a private repository? (y/n): "
           read -r PRIVATE
           case $PRIVATE in
             [Yy])
@@ -171,16 +150,16 @@ ensure-repo:
               gh repo create {{ cookiecutter.author_github_handle }}/{{ cookiecutter.__repo_name }} --public --source=.
               ;;
             *)
-              echo "Invalid input. Please enter 'y' or 'n'."
+              print "Invalid input. Please enter 'y' or 'n'."
               ;;
           esac
           break
           ;;
         [Nn])
-          exit 0
+          break
           ;;
         *)
-          echo "Invalid input. Please enter 'y' or 'n'."
+          print "Invalid input. Please enter 'y' or 'n'."
           ;;
       esac
     done
@@ -194,10 +173,10 @@ ensure-repo:
           break
           ;;
         [Nn])
-          exit 0
+          break
           ;;
         *)
-          echo "Invalid input. Please enter 'y' or 'n'."
+          print "Invalid input. Please enter 'y' or 'n'."
           ;;
       esac
     done

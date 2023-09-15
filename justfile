@@ -2,17 +2,11 @@ set shell := ["zsh", "-uc"]
 set positional-arguments
 
 # List all available recipes
-help:
-  @just --list
+@help:
+  just --list
 
 # Create a git repo if not exists, install dependencies and pre-commit hooks
 install:
-  #!/usr/bin/env zsh
-  set -euo pipefail
-  if ! [[ -d .git ]]; then
-    git init
-  fi
-
   {{just_executable()}} needs pdm
 
   pdm install --dev
