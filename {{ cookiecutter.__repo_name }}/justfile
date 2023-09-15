@@ -66,11 +66,6 @@ release: fmt audit lint typecheck bump
   git push
   git push --tag
 
-# Publish the package to GemFury
-@publish repo="pypi":
-  {% raw %}{{just_executable()}} check-repository {{repo}}{% endraw %}
-  {% raw %}pdm publish -r={{repo}}{% endraw %}
-
 # Commit with conventional commits
 @commit:
   pdm run cz commit
