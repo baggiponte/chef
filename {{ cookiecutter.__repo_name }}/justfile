@@ -16,7 +16,7 @@ set positional-arguments
   pdm run pre-commit install --install-hooks
 
 # Install dependencies and configure CI/CD with Github Actions
-init: ensure-git ensure-github install
+@init: ensure-git ensure-github install
   print "To enable CI/CD workflows, you need to configure the PERSONAL_ACCESS_TOKEN manually. You can set it with:"
   print "gh secret set PERSONAL_ACCESS_TOKEN --body=<token> --app=actions"
   print "⚠️ Do not pass the token as plain text, or it will persist in your shell history!"
