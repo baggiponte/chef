@@ -118,9 +118,10 @@ needs *commands:
 
 # Create a local git repo if not in one
 [private]
-ensure-git:
+@ensure-git:
   #! /usr/bin/env zsh
-  if ! [[ -d .git ]]; then
+  {% raw %}{{just_executable()}} needs git{% endraw %}
+  if ! git rev-parse --is-inside-work-tree &> /dev/null; then
     git init
   fi
 
