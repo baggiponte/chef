@@ -10,5 +10,15 @@
   "requires_python": "",
   "__author_name": "{{ cookiecutter.author_name.title() }}",
   "__package_description": "{{ cookiecutter.package_description.capitalize() }}",
-  "__package_emoji": "{{ cookiecutter.package_emoji ~ ' ' if cookiecutter.package_emoji }}"
+  "__package_emoji": "{{ cookiecutter.package_emoji ~ ' ' if cookiecutter.package_emoji }}",
+  "__prompts__": {
+    "author_name": "Name of the author",
+    "author_email": "Email of the author",
+    "author_github_handle": "Github handle of the author",
+    "repo_name": "Name of the repository. Will be sanitized",
+    "package_name": "Name of the package. Defaults to the sanitized `repo_name`",
+    "package_description": "Description of the package",
+    "package_emoji": "[Optional] Emoji to be used for the package",
+    "requires_python": "Minimum python version required"
+  }
 }
