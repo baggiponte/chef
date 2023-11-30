@@ -1,3 +1,61 @@
+## 0.6.0 (2023-11-30)
+
+### ⚡ Feat
+
+- add ruff formatter, pyproject-fmt and validate-pyproject
+- **just**: improve init command
+- **just**: update justfile
+- add deptry
+- run precommit hooks locally
+
+### 🐞 Fix
+
+- **just**: remove publish recipe
+- **just**: replace wrong repo name with cookiecutter values
+- **just**: echo message before input
+- **just**: create local repo in config recipe
+- **just**: do not push in config recipe
+- **just**: remove whitespace
+- **just**: use raw/endraw in the correct place
+- **readme**: improve package installation docs
+- **chef**: remove <> around email
+- **just**: fix check-repository recipe
+- **chef**: improve readme
+- **chef**: do not pass filenames to cz
+- **chef**: always check consistency with cz
+- **readme**: improve docs
+- **justfile**: init as alias for setup
+- remove scripts from pyproject
+- add docs to justfile
+- refactor justfile
+- fix mypy invocation in justfile
+- do not echo git init; sync before update in justfile
+- **ruff**: ignore E501 TRY003
+- upgrade justfile
+- remove __ from __author_github_handle
+- add __repo_name var
+
+### 🛠  Refactor
+
+- add cookiecutter prompts
+- **just**: use git rev-parse to check repo
+- **just**: init is silent
+- **just**: simplify control flow
+- **cookie**: do not set default python version
+- **just**: see commit description
+- **just**: do not need to check whether is a repo
+- **just**: update init recipe
+- **just**: improve the update recipe
+- **just**: audit imports in tests as well
+- **just**: do not check commits before commit recipe
+- **ci**: run taiki-e action to create release
+- **just**: improve warning message
+- **ci**: use grep --quiet instead of -q
+- **just**: extract a private recipe from config
+- **just**: add message to configure remaining secret
+- **just**: reword recipe
+- **just**: split init in install and config
+
 ## 0.5.7 (2023-07-12)
 
 ### 🛠  Refactor
