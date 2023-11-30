@@ -16,40 +16,51 @@ repos:
         args: [--maxkb=5120]
   - repo: local
     hooks:
-      - id: black
-        name: black
-        entry: pdm run black
-        language: system
-        types: [python]
-      - id: blacken-docs
-        name: blacken-docs
-        entry: pdm run blacken-docs
-        language: system
-        types: [python, tex, markdown, rst]
-        files: '^(src/|docs/|tests/)'
       - id: ruff
         name: ruff (isort)
         alias: isort
+        language: system
+        types: [python]
         entry: pdm run ruff
         args: [--select=I001, --fix]
-        language: system
-        types: [python]
+
       - id: ruff
-        name: ruff
-        entry: pdm run ruff
+        name: ruff (format)
+        alias: format
         language: system
         types: [python]
+        entry: pdm run ruff format
+
+      - id: ruff
+        alias: lint
+        name: ruff (linter)
+        language: system
+        types: [python]
+        entry: pdm run ruff
+
       - id: mypy
-        name: mypy
-        entry: pdm run mypy
         language: system
         types: [python]
         files: '^(src/|docs/|tests/)'
+        entry: pdm run mypy
+
+      - id: pyproject-fmt
+        name: pyproject-fmt
+        lamnguage: system
+        files: pyproject.toml
+        entry: pdm run pyproject-fmt
+
+      - id: validate-pyproject
+        name: validate-pyproject
+        language: system
+        files: pyproject.toml
+        entry: pdm run validate-pyproject
+
       - id: commitizen
         name: commitizen
+        language: system
+        stages: [push]
+        types: [python]
         entry: pdm run cz check
         pass_filenames: false
         args: [--rev-range, origin/main..HEAD]
-        language: system
-        types: [python]
-        stages: [push]
