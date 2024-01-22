@@ -39,6 +39,7 @@ repos:
         entry: pdm run ruff
 
       - id: mypy
+        name: mypy
         language: system
         types: [python]
         files: '^(src/|docs/|tests/)'
@@ -46,7 +47,7 @@ repos:
 
       - id: pyproject-fmt
         name: pyproject-fmt
-        lamnguage: system
+        language: system
         files: pyproject.toml
         entry: pdm run pyproject-fmt
 
